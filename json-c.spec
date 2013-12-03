@@ -2,7 +2,7 @@ Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
 Version:	0.11
-Release:	0.1
+Release:	1
 License:	MIT
 Group:		Development/Libraries
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
@@ -59,6 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -70,14 +72,19 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING ChangeLog README README.html
 %attr(755,root,root) %{_libdir}/libjson.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libjson.so.0
+%attr(755,root,root) %{_libdir}/libjson-c.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libjson-c.so.2
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libjson.so
-%{_libdir}/libjson.la
+%attr(755,root,root) %{_libdir}/libjson-c.so
 %{_includedir}/json
+%{_includedir}/json-c
 %{_pkgconfigdir}/json.pc
+%{_pkgconfigdir}/json-c.pc
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libjson.a
+%{_libdir}/libjson-c.a
