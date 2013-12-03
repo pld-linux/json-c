@@ -1,13 +1,13 @@
 Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
-Version:	0.9
-Release:	2
+Version:	0.11
+Release:	0.1
 License:	MIT
 Group:		Development/Libraries
-Source0:	http://oss.metaparadigm.com/json-c/%{name}-%{version}.tar.gz
-# Source0-md5:	3a13d264528dcbaf3931b0cede24abae
-URL:		http://oss.metaparadigm.com/json-c/
+Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
+# Source0-md5:	aa02367d2f7a830bf1e3376f77881e98
+URL:		https://github.com/json-c/json-c/wiki
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -51,7 +51,7 @@ Statyczna biblioteka json-c.
 
 %build
 %configure
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
