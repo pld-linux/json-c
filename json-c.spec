@@ -2,9 +2,9 @@ Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
 Version:	0.11
-Release:	2
+Release:	3
 License:	MIT
-Group:		Development/Libraries
+Group:		Libraries
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	aa02367d2f7a830bf1e3376f77881e98
 URL:		https://github.com/json-c/json-c/wiki
@@ -59,17 +59,25 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_includedir}/json
-%{__mv} $RPM_BUILD_ROOT%{_includedir}/json{-c,}
-ln -s %{_includedir}/json $RPM_BUILD_ROOT%{_includedir}/json-c
-
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+
+# link with libjson-c directly (stub libjson won't work with --no-copy-dt-needed-entries
+ln -sf $(basename $RPM_BUILD_ROOT%{_libdir}/libjson-c.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libjson.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
+
+%pretrans devel
+# transition from 0.11-2
+[ ! -L %{_includedir}/json-c ] || rm -f %{_includedir}/json-c
+# transition from <= 0.10 and 0.11-2
+if [ -d %{_includedir}/json -a ! -d %{_includedir}/json-c ]; then
+	mv -f %{_includedir}/json %{_includedir}/json-c
+	ln -sf json-c %{_includedir}/json
+fi
 
 %files
 %defattr(644,root,root,755)
