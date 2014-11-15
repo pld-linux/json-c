@@ -1,12 +1,12 @@
 Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
-Version:	0.11
-Release:	3
+Version:	0.12
+Release:	1
 License:	MIT
 Group:		Libraries
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	aa02367d2f7a830bf1e3376f77881e98
+# Source0-md5:	3ca4bbb881dfc4017e8021b5e0a8c491
 URL:		https://github.com/json-c/json-c/wiki
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -50,6 +50,8 @@ Statyczna biblioteka json-c.
 %setup -q
 
 %build
+# avoid "json_tokener.c:355:6: error: variable 'size' set but not used [-Werror=unused-but-set-variable]"
+CFLAGS="%{rpmcflags} -Wno-unused-but-set-variable"
 %configure
 %{__make} -j1
 
@@ -60,9 +62,6 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
-
-# link with libjson-c directly (stub libjson won't work with --no-copy-dt-needed-entries
-ln -sf $(basename $RPM_BUILD_ROOT%{_libdir}/libjson-c.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libjson.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,21 +81,15 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog README README.html
-%attr(755,root,root) %{_libdir}/libjson.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjson.so.0
 %attr(755,root,root) %{_libdir}/libjson-c.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libjson-c.so.2
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libjson.so
 %attr(755,root,root) %{_libdir}/libjson-c.so
-%{_includedir}/json
 %{_includedir}/json-c
-%{_pkgconfigdir}/json.pc
 %{_pkgconfigdir}/json-c.pc
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libjson.a
 %{_libdir}/libjson-c.a
