@@ -1,12 +1,13 @@
 Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
-Version:	0.12.1
+Version:	0.13.1
 Release:	1
 License:	MIT
 Group:		Libraries
+#Source0Download: https://s3.amazonaws.com/json-c_releases/releases/index.html # with AJAX (requires JavaScript)
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	55f7853f7d8cf664554ce3fa71bf1c7d
+# Source0-md5:	04969ad59cc37bddd83741a08b98f350
 URL:		https://github.com/json-c/json-c/wiki
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -52,7 +53,8 @@ Statyczna biblioteka json-c.
 %build
 # avoid "json_tokener.c:355:6: error: variable 'size' set but not used [-Werror=unused-but-set-variable]"
 CFLAGS="%{rpmcflags} -Wno-unused-but-set-variable"
-%configure
+%configure \
+	--disable-silent-rules
 %{__make} -j1
 
 %install
@@ -82,7 +84,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog README README.html
 %attr(755,root,root) %{_libdir}/libjson-c.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjson-c.so.2
+%attr(755,root,root) %ghost %{_libdir}/libjson-c.so.4
 
 %files devel
 %defattr(644,root,root,755)
