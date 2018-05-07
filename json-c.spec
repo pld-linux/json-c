@@ -6,6 +6,7 @@ Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://s3.amazonaws.com/json-c_releases/releases/index.html # with AJAX (requires JavaScript)
+# XML data with links (relative to https://s3.amazonaws.com/json-c_releases/) in https://s3.amazonaws.com/json-c_releases (no "/" at the end!)
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	04969ad59cc37bddd83741a08b98f350
 URL:		https://github.com/json-c/json-c/wiki
