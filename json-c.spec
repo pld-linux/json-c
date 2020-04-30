@@ -1,15 +1,20 @@
+#
+# Conditional build:
+%bcond_without	static_libs	# static library
+
 Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
-Version:	0.13.1
+Version:	0.14
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://s3.amazonaws.com/json-c_releases/releases/index.html # with AJAX (requires JavaScript)
 # XML data with links (relative to https://s3.amazonaws.com/json-c_releases/) in https://s3.amazonaws.com/json-c_releases (no "/" at the end!)
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	04969ad59cc37bddd83741a08b98f350
+# Source0-md5:	72cbb065b43376d825cd521d115ae1f6
 URL:		https://github.com/json-c/json-c/wiki
+BuildRequires:	cmake >= 2.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,19 +57,32 @@ Statyczna biblioteka json-c.
 %setup -q
 
 %build
-# avoid "json_tokener.c:355:6: error: variable 'size' set but not used [-Werror=unused-but-set-variable]"
-CFLAGS="%{rpmcflags} -Wno-unused-but-set-variable"
-%configure \
-	--disable-silent-rules
-%{__make} -j1
+%if %{with static_libs}
+install -d build-static
+cd build-static
+%cmake .. \
+	-DBUILD_SHARED_LIBS=OFF
+
+%{__make}
+cd ..
+%endif
+
+install -d build
+cd build
+%cmake ..
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%if %{with static_libs}
+%{__make} -C build-static install \
 	DESTDIR=$RPM_BUILD_ROOT
+%endif
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -85,14 +103,17 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog README README.html
 %attr(755,root,root) %{_libdir}/libjson-c.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjson-c.so.4
+%attr(755,root,root) %ghost %{_libdir}/libjson-c.so.5
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libjson-c.so
 %{_includedir}/json-c
 %{_pkgconfigdir}/json-c.pc
+%{_libdir}/cmake/json-c
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libjson-c.a
+%endif
