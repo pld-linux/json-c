@@ -5,16 +5,16 @@
 Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
-Version:	0.16
+Version:	0.17
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://s3.amazonaws.com/json-c_releases/releases/index.html # with AJAX (requires JavaScript)
 # XML data with links (relative to https://s3.amazonaws.com/json-c_releases/) in https://s3.amazonaws.com/json-c_releases (no "/" at the end!)
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	8110782cb2a996da5517f1f27a4bed8e
+# Source0-md5:	bad8f5e91b7b2563ee2d507054c70eb2
 URL:		https://github.com/json-c/json-c/wiki
-BuildRequires:	cmake >= 2.8
+BuildRequires:	cmake >= 3.9
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -57,29 +57,15 @@ Statyczna biblioteka json-c.
 %setup -q
 
 %build
-%if %{with static_libs}
-install -d build-static
-cd build-static
-%cmake .. \
-	-DBUILD_SHARED_LIBS=OFF
-
-%{__make}
-cd ..
-%endif
-
 install -d build
 cd build
-%cmake ..
+%cmake .. \
+	%{!?with_static_libs:-DBUILD_STATIC_LIBS=OFF}
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%if %{with static_libs}
-%{__make} -C build-static install \
-	DESTDIR=$RPM_BUILD_ROOT
-%endif
 
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
