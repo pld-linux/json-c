@@ -5,14 +5,14 @@
 Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
-Version:	0.18
+Version:	0.19
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://s3.amazonaws.com/json-c_releases/releases/index.html # with AJAX (requires JavaScript)
 # XML data with links (relative to https://s3.amazonaws.com/json-c_releases/) in https://s3.amazonaws.com/json-c_releases (no "/" at the end!)
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	e6593766de7d8aa6e3a7e67ebf1e522f
+# Source0-md5:	5678f1373ba51e0041b574c0411c696b
 URL:		https://github.com/json-c/json-c/wiki
 BuildRequires:	cmake >= 3.9
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -88,12 +88,12 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog README README.html
-%attr(755,root,root) %{_libdir}/libjson-c.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjson-c.so.5
+%{_libdir}/libjson-c.so.*.*.*
+%ghost %{_libdir}/libjson-c.so.5
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libjson-c.so
+%{_libdir}/libjson-c.so
 %{_includedir}/json-c
 %{_pkgconfigdir}/json-c.pc
 %{_libdir}/cmake/json-c
