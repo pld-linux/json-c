@@ -33,7 +33,7 @@ reprezentacje obiektów JSON w C.
 Summary:	Header files for the json-c library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki json-c
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Header files for the json-c library.
@@ -45,7 +45,7 @@ Pliki nagłówkowe biblioteki json-c.
 Summary:	Static json-c library
 Summary(pl.UTF-8):	Statyczna biblioteka json-c
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 
 %description static
 Static json-c library.
