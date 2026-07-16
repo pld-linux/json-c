@@ -15,6 +15,7 @@ Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.ta
 # Source0-md5:	5678f1373ba51e0041b574c0411c696b
 URL:		https://github.com/json-c/json-c/wiki
 BuildRequires:	cmake >= 3.9
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
