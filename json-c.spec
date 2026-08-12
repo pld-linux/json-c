@@ -6,13 +6,14 @@ Summary:	A JSON implementation in C
 Summary(pl.UTF-8):	Implementacja JSON w C
 Name:		json-c
 Version:	0.19
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 #Source0Download: https://s3.amazonaws.com/json-c_releases/releases/index.html # with AJAX (requires JavaScript)
 # XML data with links (relative to https://s3.amazonaws.com/json-c_releases/) in https://s3.amazonaws.com/json-c_releases (no "/" at the end!)
 Source0:	https://s3.amazonaws.com/json-c_releases/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	5678f1373ba51e0041b574c0411c696b
+Patch0:		cpp-unused-funcs.patch
 URL:		https://github.com/json-c/json-c/wiki
 BuildRequires:	cmake >= 3.9
 BuildRequires:	rpmbuild(macros) >= 1.605
@@ -56,6 +57,7 @@ Statyczna biblioteka json-c.
 
 %prep
 %setup -q
+%patch -P0 -p1
 
 %build
 install -d build
